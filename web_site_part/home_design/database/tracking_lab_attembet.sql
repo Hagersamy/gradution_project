@@ -15,3 +15,12 @@ CREATE TABLE lab_attempts (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (lab_id) REFERENCES labs(lab_id) ON DELETE CASCADE
 );
+-- Adding created_at and updated_at to users table
+ALTER TABLE users 
+ADD created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+ADD updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+-- Adding description and difficulty_level to labs table
+ALTER TABLE labs 
+ADD description TEXT;
+
