@@ -24,3 +24,19 @@ ADD updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE labs 
 ADD description TEXT;
 
+
+--- edit functions
+ALTER TABLE `functionality_for_roles`
+ADD `edit_lab` tinyint(1) DEFAULT 0,
+ADD `edit_users` tinyint(1) DEFAULT 0,
+ADD `delete_users` tinyint(1) DEFAULT 0,
+ADD `edit_self` tinyint(1) DEFAULT 0,
+ADD `delete_labs` tinyint(1) DEFAULT 0,
+ADD `see_all_users` tinyint(1) DEFAULT 0;
+-----------------------------
+INSERT INTO `functionality_for_roles` (`role`, `create_lab`, `approve_lab`, `resolve_tickets`, `simulate_attacks`, `edit_lab`, `edit_users`, `delete_users`, `edit_self`, `delete_labs`, `see_all_users`) VALUES
+('Hacker', 0, 0, 0, 1, 0, 0, 0, 1, 0, 0),
+('Creator', 1, 0, 0, 1, 1, 0, 0, 1, 0, 0),
+('Admin', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+('Support', 0, 0, 1, 0, 0, 0, 0, 1, 0, 1);
+
