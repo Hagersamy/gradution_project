@@ -53,6 +53,27 @@
             color: yellow; /* Change to yellow on hover */
         }
 
+        /* Search Bar */
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .search-bar input[type="text"] {
+            padding: 0.75rem;
+            width: 50%;
+            font-size: 1rem;
+            border: 2px solid yellow;
+            border-radius: 5px;
+            background-color: #222; /* Dark background */
+            color: #00ff00; /* Green text */
+        }
+
+        .search-bar input[type="text"]::placeholder {
+            color: #ddd; /* Placeholder text color */
+        }
+
         /* Hero Section */
         .hero {
             position: relative;
@@ -106,8 +127,8 @@
         .hero .btn {
             margin-top: 2rem;
             padding: 1rem 2rem;
-            background-color: yellow; /* Black button */
-            color: black; /* Green text */
+            background-color: yellow; /* Yellow button */
+            color: black; /* Black text */
             border: none;
             border-radius: 5px;
             text-transform: uppercase;
@@ -165,7 +186,7 @@
 
         .lab-card .lab-link {
             padding: 0.75rem 1.5rem;
-            background-color: black; /* Red link background */
+            background-color: black;
             color: white;
             text-decoration: none;
             border-radius: 5px;
@@ -173,13 +194,13 @@
         }
 
         .lab-card .lab-link:hover {
-            background-color: yellow; /* Change to yellow on hover */
-            color: black; /* Change text color to black on hover */
+            background-color: yellow;
+            color: black;
         }
 
         /* Footer */
         .footer {
-            background-color: #000; /* Black background */
+            background-color: #000;
             padding: 1rem;
             text-align: center;
             color: white;
@@ -198,10 +219,15 @@
         </ul>
     </nav>
 
+    <!-- Centered Search Bar -->
+    <div class="search-bar">
+        <input type="text" placeholder="Search Labs, Tools, and More">
+    </div>
+
     <!-- Hero Section -->
     <section id="home" class="hero">
         <video autoplay muted loop>
-            <source src="https://videos.pexels.com/video-files/4389357/4389357-uhd_3840_2024_30fps.mp4" type="video/mp4"> <!-- Replace with your video file -->
+            <source src="https://videos.pexels.com/video-files/4389357/4389357-uhd_3840_2024_30fps.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         <div class="content">
