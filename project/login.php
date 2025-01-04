@@ -1,3 +1,62 @@
+<?php
+session_start();
+
+require_once 'conn.php';
+
+try {
+    // Create a PDO instance
+  
+
+    // Check if the form is submitted
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Retrieve and sanitize user input
+        $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+        $password = $_POST['password'];
+
+        // Check if the inputs are filled
+        if (!$email || !$password) {
+            $error = "Please fill in all required fields.";
+        } else {
+            // Prepare the SQL query to fetch user data
+            $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Verify if user exists and password is correct
+            if ($user && password_verify($password, $user['password'])) {
+                // Store user information in the session
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['role'] = $user['role'];
+                $_SESSION['subs'] = $user['is_subscribed'];;
+                
+                // Redirect to the dashboard
+                if($user['role']="Hacker" || $user['role']="Creator")
+                {
+
+                    header("Location: userdashboard.php");
+                    exit();
+                }
+                elseif ($user['role']="Supporter") {
+                header("Location: resolve_ticket.php");
+                exit();
+                }
+                elseif ($user['role']="Admin") {
+                    header("Location: user_managment.php");
+                    exit();
+                }
+            } else {
+                $error = "Invalid email or password.";
+            }
+        }
+    }
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -146,6 +205,13 @@
             background-color: #aeff00;
         }
 
+        /* Error Message */
+        .error {
+            color: red;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
         /* Additional Links */
         .additional-links {
             margin-top: 20px;
@@ -179,9 +245,7 @@
     <nav class="navbar">
         <div class="logo">Android Pentest Academy</div>
         <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="home.php">Home</a></li>
         </ul>
     </nav>
 
@@ -193,14 +257,17 @@
         </video>
         <div class="content">
             <h1>Login to Your Account</h1>
-            <form class="login-form">
-                <input type="email" placeholder="Enter your email" required>
-                <input type="password" placeholder="Enter your password" required>
+            <?php if (!empty($error)): ?>
+                <div class="error"><?= htmlspecialchars($error); ?></div>
+            <?php endif; ?>
+            <form class="login-form" method="POST" action="">
+                <input type="email" name="email" placeholder="Enter your email" required>
+                <input type="password" name="password" placeholder="Enter your password" required>
                 <button type="submit">Login</button>
             </form>
             <div class="additional-links">
-                <a href="#">Forgot Password?</a>
-                <a href="#">New here? Sign up!</a>
+                <a href="forgotpassword.php">Forgot Password?</a>
+                <a href="register.php">New here? Sign up!</a>
             </div>
         </div>
     </section>
@@ -212,4 +279,3 @@
 
 </body>
 </html>
-

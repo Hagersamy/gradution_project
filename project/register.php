@@ -1,3 +1,47 @@
+<?php
+session_start();
+
+// Database configuration
+require_once 'conn.php';
+
+try {
+    // Create a PDO instance
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Retrieve and sanitize input
+        $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+        $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+        $password = $_POST['password'];
+        $age = filter_input(INPUT_POST, 'age', FILTER_VALIDATE_INT);
+
+        // Validate required fields
+        if (!$username || !$email || !$password || !$age) {
+            $error = "Please fill in all required fields.";
+        } else {
+            // Hash the password
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+            // Insert user into database
+            $stmt = $pdo->prepare("INSERT INTO users (username, email, password, age) 
+                                   VALUES (:username, :email, :password, :age)");
+            $stmt->bindParam(':username', $username);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':password', $hashedPassword);
+            $stmt->bindParam(':age', $age);
+
+            if ($stmt->execute()) {
+                $_SESSION['success'] = "Registration successful! Please login.";
+                header("Location: login.php");
+                exit();
+            } else {
+                $error = "Error during registration. Please try again.";
+            }
+        }
+    }
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -177,9 +221,7 @@
     <nav class="navbar">
         <div class="logo">Android Pentest Academy</div>
         <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="home.php">Home</a></li>
         </ul>
     </nav>
 
@@ -194,16 +236,15 @@
         <h1>Create Your Account</h1>
         
         <div class="content">
-            <form class="registration-form">
-                <input type="text" placeholder="Enter your username" required>
-                <input type="email" placeholder="Enter your email" required>
-                <input type="password" placeholder="Enter your password" required>
-                <input type="number" placeholder="Enter your age" required>
-                <input type="tel" placeholder="Enter your phone number" required>
+            <form class="registration-form" method="post">
+                <input type="text" placeholder="Enter your username" required name="username">
+                <input type="email" placeholder="Enter your email" required name="email">
+                <input type="password" placeholder="Enter your password" required name="password">
+                <input type="number" placeholder="Enter your age" required name="age">
                 <button type="submit">Register</button>
             </form>
             <div class="additional-links">
-                <a href="#">Already have an account? Login!</a>
+                <a href="login.php">Already have an account? Login!</a>
             </div>
         </div>
     </section>
