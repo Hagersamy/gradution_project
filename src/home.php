@@ -8,9 +8,9 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
     $searchQuery = trim($_GET['search']);
 }
 
-// Fetch Labs
+// Fetch Labs - ordered from latest to oldest
 $labs_query = $pdo->prepare(
-    "SELECT * FROM labs WHERE approved = 1 AND labname LIKE :search"
+    "SELECT * FROM labs WHERE approved = 1 AND labname LIKE :search ORDER BY lab_id DESC"
 );
 $labs_query->execute([':search' => '%' . $searchQuery . '%']);
 $labs = $labs_query->fetchAll(PDO::FETCH_ASSOC);
@@ -102,7 +102,10 @@ $labs = $labs_query->fetchAll(PDO::FETCH_ASSOC);
                                 <?php echo htmlspecialchars($lab['labname']); ?>
                             </h3>
                             <p class="text-gray-300 mb-6">
-                                <?php echo htmlspecialchars($lab['description'] ?? 'No description available.'); ?>
+                                <?php 
+                                    $desc = htmlspecialchars($lab['description'] ?? 'No description available.');
+                                    echo strlen($desc) > 20 ? substr($desc, 0, 20) . '...' : $desc;
+                                ?>
                             </p>
                             <a 
                                 href="simulate_attacks.php?labid=<?php echo $lab['lab_id']; ?>" 
@@ -124,7 +127,7 @@ $labs = $labs_query->fetchAll(PDO::FETCH_ASSOC);
     <!-- Footer -->
     <footer class="bg-black py-6">
         <div class="container mx-auto px-4 text-center">
-            <p class="text-gray-400">&copy; 2024 Android Pentest Academy. All Rights Reserved.</p>
+            <p class="text-gray-400">&copy; 2025 Android Pentest Academy. All Rights Reserved.</p>
         </div>
     </footer>
 </body>
