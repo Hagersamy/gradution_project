@@ -162,7 +162,7 @@ if(isset($_SESSION["user_id"]))
             <?php endforeach; ?>
 
             <td class="px-4 py-3 flex text-center space-x-2">
-                <?php if($access['edit_lab']==1 || $_SESSION["user_id"] === $lab['creator_id']): ?>
+                <?php if($access['edit_lab']==1 || ($_SESSION["user_id"] === $lab['creator_id'] && $lab['approved']==0 )): ?>
                     <a href="editLab.php?LabId=<?php echo htmlspecialchars($lab['lab_id']); ?>" 
                        class="inline-block bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-500 transition-colors duration-200 text-sm mb-1 flex items-center justify-center">
                         <i class="fas fa-edit mr-1"></i>
