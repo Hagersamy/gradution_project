@@ -39,8 +39,8 @@ if(isset($_SESSION["user_id"]))
             <li><a href="home.php" class="hover:text-blue-400">Home</a></li>
             <?php if(isset($_SESSION['user_id'])): ?>
                 <li><a href="userdashboard.php" class="hover:text-blue-400">Dashboard</a></li>
-                <li><a href="logout.php" class="hover:text-blue-400">Logout</a></li>
                 <li><a href="assistant.php" class="hover:text-secondary transition duration-300 ease-in-out">AI BOT</a></li>
+                <li><a href="logout.php" class="hover:text-blue-400">Logout</a></li>
             <?php endif; ?>
         </ul>
     </div>
@@ -72,7 +72,12 @@ if(isset($_SESSION["user_id"]))
                             <td class="px-4 py-3"><?php echo htmlspecialchars($problem['id']); ?></td>
                             <td class="px-4 py-3"><?php echo htmlspecialchars($problem['username']); ?></td>
                             <td class="px-4 py-3"><?php echo htmlspecialchars($problem['email']); ?></td>
-                            <td class="px-4 py-3"><?php echo htmlspecialchars($problem['message']); ?></td>
+                            <td class="px-4 py-3" title="<?php echo htmlspecialchars($problem['message']); ?>">
+                                <?php 
+                                    $message = htmlspecialchars($problem['message']);
+                                    echo strlen($message) > 40 ? substr($message, 0, 30) . '...' : $message;
+                                ?>
+                            </td>
                             <td class="px-4 py-3"><?php echo htmlspecialchars($problem['created_at']); ?></td>
                             <td class="px-4 py-3">
                                 <form action="toggle_status.php" method="POST">
