@@ -171,7 +171,7 @@ require_once 'conn.php';
 
     <!-- Footer -->
     <footer class="bg-dark text-light text-center py-4">
-        <p>&copy; 2024 Android Pentest Academy. All Rights Reserved.</p>
+        <p>&copy; 2025 Android Pentest Academy. All Rights Reserved.</p>
     </footer>
 </body>
 </html>
